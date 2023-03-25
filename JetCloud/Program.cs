@@ -22,13 +22,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 
-//ClientSecretCredential credential = new ClientSecretCredential(
-//    "18843e6e-1846-456c-a05c-500f0aee12f6",
-//    "d0fed436-6ef1-4746-8114-34e71d1515a7",
-//    "f8646db3aead41beac9c393f5aec786a");
-//var credentials = new ManagedIdentityCredential(clientId: "d0fed436-6ef1-4746-8114-34e71d1515a7");
-//var secretClient = new SecretClient(new Uri(kvUrl), credential);
-
 //start of adapted Code from (msmbaldwin, 2023)
 var kvUrl = new String(configuration["KeyVaultUrl"]);
 var secretClient = new SecretClient(new Uri(kvUrl), new DefaultAzureCredential());
@@ -42,7 +35,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
-
 
 builder.Services.AddDataProtection()
     .PersistKeysToDbContext<AppDbContext>();

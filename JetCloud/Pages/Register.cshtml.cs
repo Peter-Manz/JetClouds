@@ -49,15 +49,11 @@ namespace JetCloud.Pages
                     {
                         newUser.UserID = currentUsers.UserID + 1;
                     }
-
-
                     newUser.Email = _protector.Protect(Input.Email);
-
-
                     newUser.GivenName = Convert.ToString(Request.Form["GivenName"]);
                     newUser.SurName = Convert.ToString(Request.Form["SurName"]);
                     newUser.Title = Convert.ToString(Request.Form["Title"]);
-                    newUser.Department = Convert.ToString(Request.Form["Department"]);
+                    newUser.DepartmentID = Convert.ToInt32(Request.Form["DepartmentID"]);
                     newUser.SubscriptionStatus = true;
                     newUser.Dob = Convert.ToDateTime(Request.Form["Dob"]);
                     _db.Users.Add(newUser);

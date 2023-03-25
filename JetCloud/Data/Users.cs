@@ -11,10 +11,10 @@ namespace JetCloud.Data
         [StringLength(50)]
         public string? SurName { get; set; }
         public string? Title { get; set; }
-        public string? Department { get; set; }
         public DateTime Dob { get; set; }
         public Boolean SubscriptionStatus { get; set; }
         [Key, StringLength(75)]
         public string? Email { get; set; }
+        public int DepartmentID { get; set; }
     }
 }

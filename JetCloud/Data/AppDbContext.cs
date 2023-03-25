@@ -11,7 +11,8 @@ namespace JetCloud.Data
 
         }
         public DbSet<Users> Users { get; set; } = null!;
-
+        public DbSet<Files> DepartmentFiles { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; } = null!;
         public DbSet<DataProtectionKey> DataProtectionKeys { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)

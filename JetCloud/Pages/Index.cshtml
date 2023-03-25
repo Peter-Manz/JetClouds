@@ -14,7 +14,14 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <h4>Welcome, @UserManager.GetUserName(User)</h4>
+        <div>
+            @foreach(var dep in Model.departments)
+            {
+                <div>
+                    <h4>@dep.departmentID</h4>
+                    <h4>@dep.departmentName</h4>
+                </div>
+            }
+        </div>    
     }
    
-</div>
-

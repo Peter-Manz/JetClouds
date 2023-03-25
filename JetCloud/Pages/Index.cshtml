@@ -1,4 +1,5 @@
 ﻿@page
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -9,19 +10,67 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<div>
+    <h2 class="display-4">Welcome</h2>
     @if (SignInManager.IsSignedIn(User))
     {
         <h4>Welcome, @UserManager.GetUserName(User)</h4>
-        <div>
+
+@*        <form method="post">
+            <table class="table">
             @foreach(var dep in Model.departments)
             {
-                <div>
-                    <h4>@dep.departmentID</h4>
-                    <h4>@dep.departmentName</h4>
-                </div>
+            <tr>
+              <td>@dep.departmentID</td>
+              <td>@dep.departmentName</td>
+              <td><button id="Edit" type="submit" asp-page-handler="Edit" asp-route-departmentID="@dep.departmentID">Edit</button></td>
+            </tr>
             }
-        </div>    
+            </table>
+        </form>*@
+@*        <form method="post" enctype="multipart/form-data">
+            <h4>File Details</h4>
+            <div asp-validation-summary="All"></div>
+            <div>
+                <label asp-for="newFile.fileName">File Name</label>
+                <input asp-for="newFile.fileName" />
+            </div>
+            <div>
+                <label asp-for="newFile.departmentID">Department ID</label>
+                <input asp-for="newFile.departmentID" />
+            </div>
+            <div>
+                <label asp-for="newFile.fileDate">Todays Date</label>
+                <input asp-for="newFile.fileDate" />
+            </div>
+            <div>
+                <label >Upload File</label>
+                <input type="file" id="File1" name="File1" multiple="multiple" />
+            </div>
+            <input class="EnterFilesBtn" type="submit" />
+        </form>
+*@
+
+        <form enctype="multipart/form-data" method="post">
+            <div>
+                <label asp-for="newFile.fileName">File Name</label>
+                <input asp-for="newFile.fileName" />
+            </div>
+            <div>
+                <label asp-for="newFile.departmentID">Department ID</label>
+                <input asp-for="newFile.departmentID" />
+            </div>
+            <dl>
+                <dt>
+                    <label for="newFile.fileData"></label>
+                </dt>
+                <dd>
+                    <input asp-for="newFile.fileData" type="file" multiple="multiple"/>
+                </dd>
+            </dl>
+            <input asp-page-handler="Upload" class="btn" type="submit" value="Upload">
+        </form>
     }
+   
+</div>
    

@@ -1,0 +1,64 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    //Layout = "~/Pages/_Layout.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using JetCloud.Data
+@using Microsoft.Extensions.Options
+
+<div class="RegisterMessage">
+    <h2>Registration</h2>
+</div>
+
+<form asp-action="Register" class="RegisterForm" method="post">
+    <h4>Enter in your details</h4>
+    <div asp-validation-summary="All"></div>
+    <div>
+        <label asp-for="newUser.GivenName"></label>
+        <input asp-for="newUser.GivenName" name = "GivenName"/>
+      
+    </div>
+    <div>
+        <label asp-for="newUser.SurName"></label>
+        <input asp-for="newUser.SurName" name="SurName" />
+       
+    </div>
+    <div>
+        <label asp-for="newUser.Title"></label>
+        <input asp-for="newUser.Title" name="Title" />
+      
+    </div>
+    <div>
+        <label asp-for="newUser.Dob"></label>
+        <input asp-for="newUser.Dob" name="Dob" />
+       
+    </div>
+    <div>
+        <label asp-for="newUser.Department"></label>
+        <input asp-for="newUser.Department" name="Department" />
+      
+    </div>
+    <div>
+        <label asp-for="Input.Email"></label>
+        <input asp-for="Input.Email" />
+        <span asp-validation-for="Input.Email"></span>
+    </div>
+    <div>
+        <label asp-for="Input.UserName"></label>
+        <input asp-for="Input.UserName" />
+        <span asp-validation-for="Input.UserName"></span>
+   </div>
+    <div>
+        <label asp-for="Input.Password"></label>
+        <input asp-for="Input.Password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+    <div>
+        <label asp-for="Input.ConfirmPassword"></label>
+        <input asp-for="Input.ConfirmPassword" />
+        <span asp-validation-for="Input.ConfirmPassword"></span>
+    </div>
+    <button class="RegisterBtn" type="submit">Register</button>
+</form>

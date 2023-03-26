@@ -15,8 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Start of AdaptedCode from https://stackoverflow.com/questions/69722872/asp-net-core-6-how-to-access-configuration-during-startup
 ConfigurationManager configuration = builder.Configuration;
-//IWebHostEnvironment enviroment = builder.Environment;
+IWebHostEnvironment enviroment = builder.Environment;
 //end of adapted code 
+
+builder.Services.Configure<IISServerOptions>(options => options.MaxRequestBodySize = 104857600);
 
 builder.Services.AddRazorPages();
 builder.Services.AddMvc();

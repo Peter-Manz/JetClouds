@@ -16,59 +16,52 @@
     {
         <h4>Welcome, @UserManager.GetUserName(User)</h4>
 
-@*        <form method="post">
+        //<form method="post">
             <table class="table">
             @foreach(var dep in Model.departments)
             {
             <tr>
               <td>@dep.departmentID</td>
               <td>@dep.departmentName</td>
-              <td><button id="Edit" type="submit" asp-page-handler="Edit" asp-route-departmentID="@dep.departmentID">Edit</button></td>
+            @* <td><button id="Edit" type="submit" asp-page-handler="Edit" asp-route-departmentID="@dep.departmentID">Edit</button></td>*@
             </tr>
             }
             </table>
-        </form>*@
-@*        <form method="post" enctype="multipart/form-data">
-            <h4>File Details</h4>
-            <div asp-validation-summary="All"></div>
-            <div>
-                <label asp-for="newFile.fileName">File Name</label>
-                <input asp-for="newFile.fileName" />
-            </div>
-            <div>
-                <label asp-for="newFile.departmentID">Department ID</label>
-                <input asp-for="newFile.departmentID" />
-            </div>
-            <div>
-                <label asp-for="newFile.fileDate">Todays Date</label>
-                <input asp-for="newFile.fileDate" />
-            </div>
-            <div>
-                <label >Upload File</label>
-                <input type="file" id="File1" name="File1" multiple="multiple" />
-            </div>
-            <input class="EnterFilesBtn" type="submit" />
-        </form>
-*@
+        //</form>
+
+        <div>
+            @foreach (var file in Model.departmentFiles)
+            {
+                <p>@file.fileName</p>
+                <p>@file.fileType</p>
+                <p>@file.fileDate</p>
+                <p>@file.fileVersion</p>
+                <p>@file.departmentID</p>
+                <a asp-page="/Download" asp-route-id="@file.fileID">Download</a>
+            }
+        </div>
+
 
         <form enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="All"></div>
             <div>
-                <label asp-for="newFile.fileName">File Name</label>
-                <input asp-for="newFile.fileName" />
+                <label asp-for="uploadedFile.departmentID">Department ID</label>
+                <input asp-for="uploadedFile.departmentID" name="departmentID" />
             </div>
             <div>
-                <label asp-for="newFile.departmentID">Department ID</label>
-                <input asp-for="newFile.departmentID" />
+                <label asp-for="uploadedFile.fileDate"></label>
+                <input asp-for="uploadedFile.fileDate" name="fileDate" />
+
             </div>
             <dl>
                 <dt>
-                    <label for="newFile.fileData"></label>
+                    <label> Upload File</label>
                 </dt>
                 <dd>
-                    <input asp-for="newFile.fileData" type="file" multiple="multiple"/>
+                    <input type="file" id="file1" asp-for="Upload" multiple="multiple"/>
                 </dd>
             </dl>
-            <input asp-page-handler="Upload" class="btn" type="submit" value="Upload">
+            <input class="UploadFilebtn" type="submit">
         </form>
     }
    

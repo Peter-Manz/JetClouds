@@ -41,6 +41,7 @@ namespace JetCloud.Pages
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     //await _userManager.AddToRoleAsync(user, "Member");
                     var currentUsers = _db.Users.OrderByDescending(b => b.UserID).FirstOrDefault();
+
                     if (currentUsers == null)
                     {
                         newUser.UserID = 1;

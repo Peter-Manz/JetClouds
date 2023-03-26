@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel.DataAnnotations;
 using System.IO.Compression;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace JetCloud.Pages
 {
@@ -18,27 +19,26 @@ namespace JetCloud.Pages
         private AppDbContext _db;
         private IWebHostEnvironment _he;
 
-        [BindProperty]
-        public Files newFile { get; set; }
+        public Files uploadedFile = new Files();
 
-        //[BindProperty]
-        [Display(Name ="File")]
-        public IFormFile FormFile { get; set; }
+        [BindProperty]
+        public IFormFile Upload { get; set; }
 
         public IList<Files> departmentFiles { get; private set; }
-        public IList<Department> departments { get; private set; }
+        public IList<Department> departments { get;  private set; }
+        
 
-        IDataProtector _protector;
+       // IDataProtector _protector;
 
 
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public IndexModel(AppDbContext db, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment he, IDataProtectionProvider provider)
+        public IndexModel(AppDbContext db, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment he)//, IDataProtectionProvider provider)
         {
             _signInManager = signInManager;
             _db = db;
             _he = he;
-            _protector = provider.CreateProtector("Contoso.Security.BearerToken");
+            //_protector = provider.CreateProtector("Contoso.Security.BearerToken");
 
         }
         public void OnGet()
@@ -46,47 +46,46 @@ namespace JetCloud.Pages
             departmentFiles = _db.DepartmentFiles.OrderByDescending(b => b.fileID).ToList();
             departments = _db.Departments.OrderByDescending(b => b.departmentID).ToList();
         }
-        public async Task<IActionResult> OnPostAsync(IFormFile file)
+
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid) { return Page(); }
+            if (!ModelState.IsValid)
+            {
 
-            //var fileDic = "Files";
-            //string filePath = Path.Combine(_he.WebRootPath, fileDic);
-
-
-            //var filePath = Path.GetTempFileName();
-
-            //newFile.fileName = file.FileName;
+                return Page();
+            }
 
             var currentFile = _db.DepartmentFiles.OrderByDescending(b => b.fileID).FirstOrDefault();
+
             if (currentFile == null)
             {
-                newFile.fileID = 1;
+                uploadedFile.fileID = 1;
+                uploadedFile.fileVersion = 1;
             }
             else
             {
-                newFile.fileID = currentFile.fileID + 1;
-                newFile.fileVersion = currentFile.fileVersion + 1;
-                using (var ms = new MemoryStream())
-                {
-                    await FormFile.CopyToAsync(ms);
+                int fileID = currentFile.fileID + 1;
+                uploadedFile.fileID = fileID;
 
-                    if (ms.Length < 2097152)
-                    {
-                        newFile.fileData = ms.ToArray();
-                       
-                        _db.DepartmentFiles.Add(newFile);
-                        await _db.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("File", "The file is too large.");
-                    }
-                }
-             
             }
-            return RedirectToPage();
-        }
+            
+            uploadedFile.fileName = Convert.ToString(Upload.FileName);
+            uploadedFile.departmentID = Convert.ToInt32(Request.Form["departmentID"]);            
+            //uploadedFile.fileType = Convert.ToString(Upload.GetType());
+            uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
+            uploadedFile.fileVersion = 1;
 
+            var filePath = Path.Combine(_he.ContentRootPath, "uploads", Upload.FileName);
+            uploadedFile.fileType = Convert.ToString(filePath);
+
+            using (MemoryStream ms = new MemoryStream(100))
+            {
+                await Upload.CopyToAsync(ms);
+                uploadedFile.fileData = ms.ToArray();
+            }
+            _db.DepartmentFiles.Add(uploadedFile);
+            await _db.SaveChangesAsync();
+            return RedirectToPage("Index");
+        }       
     }
 }

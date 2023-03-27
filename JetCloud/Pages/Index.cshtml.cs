@@ -98,7 +98,7 @@ namespace JetCloud.Pages
         public async Task<IActionResult> OnPostDownloadAsync(int fileID)
         {
             //cannont figure out why fileID not getting sent to Controller function, test id is 5
-            var downloadFile = await _db.DepartmentFiles.FindAsync(5);               
+            var downloadFile = await _db.DepartmentFiles.FindAsync(fileID);               
 
             if (!(downloadFile == null))
             {

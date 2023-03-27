@@ -32,6 +32,7 @@ namespace JetCloud.Pages
         //[BindProperty]
        // public Files downloadFile { get; set; }
 
+        // will use this to encrpyt all the data eventually
         // IDataProtector _protector;
 
 
@@ -79,8 +80,10 @@ namespace JetCloud.Pages
             uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
             uploadedFile.fileVersion = 1;
 
+            //This was just testing other methods, will switch to appropriate type from download function
             var filePath = Path.Combine(_he.ContentRootPath, "uploads", Upload.FileName);
             uploadedFile.fileType = Convert.ToString(filePath);
+            //end of method testing
 
             using (MemoryStream ms = new MemoryStream(100))
             {

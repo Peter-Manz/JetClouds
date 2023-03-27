@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO.Compression;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace JetCloud.Pages
 {
@@ -26,9 +27,12 @@ namespace JetCloud.Pages
 
         public IList<Files> departmentFiles { get; private set; }
         public IList<Department> departments { get;  private set; }
-        
 
-       // IDataProtector _protector;
+
+        //[BindProperty]
+       // public Files downloadFile { get; set; }
+
+        // IDataProtector _protector;
 
 
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -86,6 +90,29 @@ namespace JetCloud.Pages
             _db.DepartmentFiles.Add(uploadedFile);
             await _db.SaveChangesAsync();
             return RedirectToPage("Index");
-        }       
+        }
+
+        public async Task<IActionResult> OnPostDownloadAsync(int fileID)
+        {
+            //cannont figure out why fileID not getting sent to Controller function, test id is 5
+            var downloadFile = await _db.DepartmentFiles.FindAsync(5);               
+
+            if (!(downloadFile == null))
+            {
+                //start of adapted code from https://www.aspsnippets.com/Articles/FileContentResult-Net-Core-Example-Using-FileContentResult-in-ASPNet-Core-MVC.aspx
+                byte[] bytes = downloadFile.fileData;
+                string contentType = "";
+                new FileExtensionContentTypeProvider().TryGetContentType(downloadFile.fileName, out contentType);
+                //end of adapted code
+
+                //start of adatped code https://dev.to/zoltanhalasz/upload-and-download-pdf-files-to-from-ms-sql-database-using-razor-pages-7jh
+                return new FileContentResult(bytes, contentType) { FileDownloadName = downloadFile.fileName };
+                //end of adapted code
+            }
+            else
+            {
+                return RedirectToPage("/Index");
+            }
+        }
     }
 }

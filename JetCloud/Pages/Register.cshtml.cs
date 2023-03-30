@@ -22,13 +22,16 @@ namespace JetCloud.Pages
 
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
+        //private RoleManagerModel _roleManagerModel;
 
-        public RegisterModel(UserManager<ApplicationUser> um, SignInManager<ApplicationUser> sm, AppDbContext db, IDataProtectionProvider provider)
+        public RegisterModel(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> um, SignInManager<ApplicationUser> sm, AppDbContext db, IDataProtectionProvider provider)
         {
             _signInManager = sm;
             _userManager = um;
             _db = db;
             _protector = provider.CreateProtector("Contoso.Security.BearerToken");
+            _roleManager = roleManager;
         }
         public async Task<IActionResult> OnPostAsync()
         {
@@ -38,8 +41,9 @@ namespace JetCloud.Pages
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    //await CreateRoles();
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    //await _userManager.AddToRoleAsync(user, "Member");
+                    await _userManager.AddToRoleAsync(user, "Member");
                     var currentUsers = _db.Users.OrderByDescending(b => b.UserID).FirstOrDefault();
 
                     if (currentUsers == null)
@@ -67,6 +71,23 @@ namespace JetCloud.Pages
                 }
             }
                 return Page();
+        }
+        private async Task CreateRoles()
+        {
+            String[] roleNames = { "Admin", "Member" };
+            foreach (var roleName in roleNames)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(roleName);
+                if (!roleExists)
+                {
+                    var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+            var _user = await _userManager.FindByNameAsync("peter@chester.ac.uk");
+            if (_user != null)
+            {
+                await _userManager.AddToRoleAsync(_user, "Admin");
+            }
         }
 
     }

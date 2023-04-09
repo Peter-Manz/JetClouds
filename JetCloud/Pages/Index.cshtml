@@ -10,27 +10,25 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<div>
-    <h2 class="display-4">Welcome</h2>
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <h4>Welcome, @UserManager.GetUserName(User)</h4>
 
-        //<form method="post">
-            <table class="table">
-            @foreach(var dep in Model.departments)
-            {
-            <tr>
-              <td>@dep.departmentID</td>
-              <td>@dep.departmentName</td>
-            @* <td><button id="Edit" type="submit" asp-page-handler="Edit" asp-route-departmentID="@dep.departmentID">Edit</button></td>*@
-            </tr>
-            }
-            </table>
-        //</form>
+@if (SignInManager.IsSignedIn(User))
+{
+    <h4>Welcome, @UserManager.GetUserName(User)</h4>
+
+        <form asp-page="./Index" method="get">
+            <p>Find by Name:
+            <input type="text" name="Search" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+            </p>
+    </form>
+
+    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+        @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)
+    </a>
 
         <div>
-            @foreach (var file in Model.departmentFiles)
+            @foreach (var file in Model.DepartmentFiles)
             {
                 <p>@file.fileName</p>
                 <p>@file.fileType</p>
@@ -41,9 +39,8 @@
                     <button type="submit" asp-page-handler="Download" asp-route-fileID="@file.fileID">Download</button>
                     </form>
             }
+         
         </div>
-  
-
 
         <form enctype="multipart/form-data" method="post">
             <div asp-validation-summary="All"></div>
@@ -66,7 +63,7 @@
             </dl>
             <input class="UploadFilebtn" type="submit">
         </form>
-    }
+}
    
-</div>
+
    

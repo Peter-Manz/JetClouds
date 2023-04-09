@@ -12,6 +12,10 @@ using System.IO.Compression;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Diagnostics.Tracing;
+using System;
+using System.Security.Cryptography.Pkcs;
+using Microsoft.Data.SqlClient;
 
 namespace JetCloud.Pages
 {
@@ -25,12 +29,18 @@ namespace JetCloud.Pages
         [BindProperty]
         public IFormFile Upload { get; set; }
 
-        public IList<Files> departmentFiles { get; private set; }
-        public IList<Department> departments { get;  private set; }
+        public IList<Files> DepartmentFiles { get; set; }
+        public IList<Department> Departments { get; set; }
+
+        //[BindProperty]
+        //public string Search { get; set; }
+
+        public string NameSort { get; set; }
+        public string CurrentFilter { get; set; }
 
 
         //[BindProperty]
-       // public Files downloadFile { get; set; }
+        // public Files downloadFile { get; set; }
 
         // will use this to encrpyt all the data eventually
         // IDataProtector _protector;
@@ -46,10 +56,37 @@ namespace JetCloud.Pages
             //_protector = provider.CreateProtector("Contoso.Security.BearerToken");
 
         }
-        public void OnGet()
+
+        public async Task OnGetAsync(string sortOrder, string search)
         {
-            departmentFiles = _db.DepartmentFiles.OrderByDescending(b => b.fileID).ToList();
-            departments = _db.Departments.OrderByDescending(b => b.departmentID).ToList();
+           
+            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            CurrentFilter = search;
+
+            IQueryable<Files> depFiles = from f in _db.DepartmentFiles select f; 
+
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                depFiles =  depFiles.Where(b => b.fileName.Contains(search));
+            }
+
+            switch (sortOrder) 
+            {
+                case "name_desc":
+                    depFiles = depFiles.OrderByDescending(b => b.fileName);
+                    break;
+
+                default:
+                    depFiles = depFiles.OrderBy(b => b.departmentID);
+                    break;
+            }
+
+
+            DepartmentFiles = await depFiles.ToListAsync();
+           
+
         }
 
         public async Task<IActionResult> OnPostAsync()

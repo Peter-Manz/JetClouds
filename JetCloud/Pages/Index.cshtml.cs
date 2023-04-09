@@ -31,9 +31,7 @@ namespace JetCloud.Pages
 
         public IList<Files> DepartmentFiles { get; set; }
         public IList<Department> Departments { get; set; }
-
-        //[BindProperty]
-        //public string Search { get; set; }
+        public IList<Users> Users { get; set; }
 
         public string NameSort { get; set; }
         public string CurrentFilter { get; set; }
@@ -56,7 +54,7 @@ namespace JetCloud.Pages
             //_protector = provider.CreateProtector("Contoso.Security.BearerToken");
 
         }
-
+        //Start of Adapted Code https://learn.microsoft.com/en-us/aspnet/core/data/ef-rp/sort-filter-page?view=aspnetcore-6.0
         public async Task OnGetAsync(string sortOrder, string search)
         {
            
@@ -82,12 +80,13 @@ namespace JetCloud.Pages
                     depFiles = depFiles.OrderBy(b => b.departmentID);
                     break;
             }
-
-
             DepartmentFiles = await depFiles.ToListAsync();
-           
+            
+            Departments = await _db.Departments.ToListAsync();
+            Users = await _db.Users.OrderByDescending(b => b.UserID).ToListAsync();
 
         }
+        //end of adapted Code
 
         public async Task<IActionResult> OnPostAsync()
         {

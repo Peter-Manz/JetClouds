@@ -10,9 +10,9 @@ namespace JetCloud.Data
         {
 
         }
-        public DbSet<Users> Users { get; set; } = null!;
+        public DbSet<Users> Users { get; set; }
         public DbSet<Files> DepartmentFiles { get; set; }
-        public DbSet<Department> Departments { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; }
         public DbSet<DataProtectionKey> DataProtectionKeys { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -22,10 +22,11 @@
             <a asp-page="./Index">Back to full List</a>
             </p>
     </form>
-
-    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
-        @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)
-    </a>
+ 
+        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+         @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)
+        </a>
+  
 
         <div>
             @foreach (var file in Model.DepartmentFiles)
@@ -42,7 +43,29 @@
          
         </div>
 
-        <form enctype="multipart/form-data" method="post">
+        <div>
+            @foreach (var deps in Model.Departments)
+            {
+                <p>@deps.departmentName</p>
+                <p>@deps.departmentID</p>
+            }
+        </div>
+
+        <div>
+            @foreach (var user in Model.Users)
+            {
+                <p>@user.Title</p>
+                <p>@user.GivenName</p>
+                <p>@user.SurName</p>
+              
+            }
+        </div>
+
+        <div>
+        <button onclick="showForm_hideForm()">Upload File</button>
+        </div>
+
+        <form id="uploadFileForm" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="All"></div>
             <div>
                 <label asp-for="uploadedFile.departmentID">Department ID</label>

@@ -38,7 +38,10 @@
                 <p>@file.departmentID</p>
                 <form method="post" asp-page-handler="Download" asp-route-fileID="@file.fileID">
                     <button type="submit" asp-page-handler="Download" asp-route-fileID="@file.fileID">Download</button>
-                    </form>
+                </form>
+                <form method="post" asp-page-handler="Delete" asp-route-fileID="@file.fileID">
+                    <button type="submit" asp-page-handler="Delete" asp-route-fileID="@file.fileID">Delete</button>
+                </form>
             }
          
         </div>

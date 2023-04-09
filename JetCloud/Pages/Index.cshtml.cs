@@ -40,18 +40,16 @@ namespace JetCloud.Pages
         //[BindProperty]
         // public Files downloadFile { get; set; }
 
-        // will use this to encrpyt all the data eventually
-        // IDataProtector _protector;
-
+         IDataProtector _protector;
 
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public IndexModel(AppDbContext db, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment he)//, IDataProtectionProvider provider)
+        public IndexModel(AppDbContext db, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment he, IDataProtectionProvider provider)
         {
             _signInManager = signInManager;
             _db = db;
             _he = he;
-            //_protector = provider.CreateProtector("Contoso.Security.BearerToken");
+            _protector = provider.CreateProtector("Contoso.Security.BearerToken");
 
         }
         //Start of Adapted Code https://learn.microsoft.com/en-us/aspnet/core/data/ef-rp/sort-filter-page?view=aspnetcore-6.0
@@ -62,7 +60,16 @@ namespace JetCloud.Pages
 
             CurrentFilter = search;
 
-            IQueryable<Files> depFiles = from f in _db.DepartmentFiles select f; 
+            IQueryable<Files> depFiles = from f in _db.DepartmentFiles select f;
+            //IQueryable<Files> depzFiles;
+   
+            //foreach (var file in _db.DepartmentFiles)
+            //{
+            //    var fileName = _protector.Unprotect(file.fileName);
+            //    var fileType = _protector.Unprotect(file.fileType);
+            //    var fileData = _protector.Unprotect(file.fileData);
+            //    var readableFile = (file.fileID, fileName, file.fileDate, fileType, fileData, file.fileVersion, file.departmentID);
+            //}
 
 
             if (!string.IsNullOrEmpty(search))
@@ -109,8 +116,10 @@ namespace JetCloud.Pages
                 uploadedFile.fileID = fileID;
 
             }
-            
-            uploadedFile.fileName = Convert.ToString(Upload.FileName);
+
+            uploadedFile.fileName = _protector.Protect(Convert.ToString(Upload.FileName));
+
+            //uploadedFile.fileName = Convert.ToString(Upload.FileName);
             uploadedFile.departmentID = Convert.ToInt32(Request.Form["departmentID"]);            
             //uploadedFile.fileType = Convert.ToString(Upload.GetType());
             uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
@@ -118,13 +127,15 @@ namespace JetCloud.Pages
 
             //This was just testing other methods, will switch to appropriate type from download function
             var filePath = Path.Combine(_he.ContentRootPath, "uploads", Upload.FileName);
-            uploadedFile.fileType = Convert.ToString(filePath);
+            uploadedFile.fileType = _protector.Protect(Convert.ToString(filePath));
+            //uploadedFile.fileType = Convert.ToString(filePath);
             //end of method testing
 
             using (MemoryStream ms = new MemoryStream(100))
             {
                 await Upload.CopyToAsync(ms);
-                uploadedFile.fileData = ms.ToArray();
+                uploadedFile.fileData = _protector.Protect(ms.ToArray());
+                //uploadedFile.fileData = ms.ToArray();
             }
             _db.DepartmentFiles.Add(uploadedFile);
             await _db.SaveChangesAsync();
@@ -133,7 +144,7 @@ namespace JetCloud.Pages
 
         public async Task<IActionResult> OnPostDownloadAsync(int fileID)
         {
-            //cannont figure out why fileID not getting sent to Controller function, test id is 5
+           
             var downloadFile = await _db.DepartmentFiles.FindAsync(fileID);               
 
             if (!(downloadFile == null))
@@ -152,6 +163,29 @@ namespace JetCloud.Pages
             {
                 return RedirectToPage("/Index");
             }
+        }
+        public async Task<IActionResult> OnPostDeleteAsync(int? fileID)
+        {
+            if(fileID == null)
+            {
+                return NotFound();
+            }
+            var file = await _db.DepartmentFiles.FindAsync(fileID);
+           
+            if (file == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                _db.DepartmentFiles.Remove(file);
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new Exception($"Item {file.fileID} not found!", e);
+            }
+            return RedirectToPage("./Index");
         }
     }
 }

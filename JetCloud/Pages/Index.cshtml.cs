@@ -117,9 +117,9 @@ namespace JetCloud.Pages
 
             }
 
-            uploadedFile.fileName = _protector.Protect(Convert.ToString(Upload.FileName));
+            //uploadedFile.fileName = _protector.Protect(Convert.ToString(Upload.FileName));
 
-            //uploadedFile.fileName = Convert.ToString(Upload.FileName);
+            uploadedFile.fileName = Convert.ToString(Upload.FileName);
             uploadedFile.departmentID = Convert.ToInt32(Request.Form["departmentID"]);            
             //uploadedFile.fileType = Convert.ToString(Upload.GetType());
             uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
@@ -127,15 +127,15 @@ namespace JetCloud.Pages
 
             //This was just testing other methods, will switch to appropriate type from download function
             var filePath = Path.Combine(_he.ContentRootPath, "uploads", Upload.FileName);
-            uploadedFile.fileType = _protector.Protect(Convert.ToString(filePath));
-            //uploadedFile.fileType = Convert.ToString(filePath);
+            //uploadedFile.fileType = _protector.Protect(Convert.ToString(filePath));
+            uploadedFile.fileType = Convert.ToString(filePath);
             //end of method testing
 
             using (MemoryStream ms = new MemoryStream(100))
             {
                 await Upload.CopyToAsync(ms);
-                uploadedFile.fileData = _protector.Protect(ms.ToArray());
-                //uploadedFile.fileData = ms.ToArray();
+               //uploadedFile.fileData = _protector.Protect(ms.ToArray());
+                uploadedFile.fileData = ms.ToArray();
             }
             _db.DepartmentFiles.Add(uploadedFile);
             await _db.SaveChangesAsync();

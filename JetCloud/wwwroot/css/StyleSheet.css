@@ -1,0 +1,85 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+body {
+    font-family: 'Merriweather', serif;
+    background-color: #EAEAEA;
+}
+* {
+    box-sizing: border-box;
+}
+#uploadFileForm {
+    display: none;
+    background-color: aquamarine;
+}
+#filesGrid {
+    padding: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 80%;
+    margin-left:auto;
+    background-color: forestgreen;
+}
+#departmentFiles {
+    background-color: #F5F5F5;
+    width: 200px;
+    height: 225px;
+    padding: 0px;
+    margin: 20px;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
+    border-radius: 5px;
+}
+#filesGrid #departmentFiles #fileDropDown {
+    background-color: #F5F5F5;
+    padding-left: 125px;
+    height: 125px;
+    border-radius: 5px;
+}
+#departmentFiles #fileBanner{
+    background-color: #2A3439;
+    padding: 0px;
+    margin: 0px; 
+    color: #FFFFFF;
+    border-radius: 5px;
+}
+#fileBanner p {
+    font-size:15px;
+    font-weight: 200;
+    text-align: center;
+    padding:2px;
+    margin:0px;
+}
+#departments {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 300px;
+    padding: 0px;
+    margin: 0px;
+    border: 1.25px solid #2A3439;
+}
+#subHeading {
+    width: 300px;
+    height: 50px;
+    margin: 0px;
+    padding: 0px;
+    border: 1.25px solid #2A3439;
+    background-color: #660000;
+    color: #F5F5F5;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
+}
+#subHeading h4{
+    margin: 13px;
+    font-weight: 200;
+}
+#departments p {
+    font-size:15px;
+    height:50px;
+    text-align: right;
+    padding: 13px;
+    width: 100%;
+    margin: 0px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    
+}
+#users {
+    background-color: red;
+}

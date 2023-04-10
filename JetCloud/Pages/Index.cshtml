@@ -13,8 +13,6 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <h4>Welcome, @UserManager.GetUserName(User)</h4>
-
         <form asp-page="./Index" method="get">
             <p>Find by Name:
             <input type="text" name="Search" value="@Model.CurrentFilter" />
@@ -27,34 +25,42 @@
          @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)
         </a>
   
+        <div id="filesGrid">
+           
+                @foreach (var file in Model.DepartmentFiles)
+                {
 
-        <div>
-            @foreach (var file in Model.DepartmentFiles)
-            {
-                <p>@file.fileName</p>
-                <p>@file.fileType</p>
-                <p>@file.fileDate</p>
-                <p>@file.fileVersion</p>
-                <p>@file.departmentID</p>
-                <form method="post" asp-page-handler="Download" asp-route-fileID="@file.fileID">
-                    <button type="submit" asp-page-handler="Download" asp-route-fileID="@file.fileID">Download</button>
-                </form>
-                <form method="post" asp-page-handler="Delete" asp-route-fileID="@file.fileID">
-                    <button type="submit" asp-page-handler="Delete" asp-route-fileID="@file.fileID">Delete</button>
-                </form>
-            }
-         
+            <div id="departmentFiles">
+                <div id="fileDropDown">
+                    <form method="post" asp-page-handler="Download" asp-route-fileID="@file.fileID">
+                        <button type="submit" asp-page-handler="Download" asp-route-fileID="@file.fileID">Download</button>
+                    </form>
+                    <form method="post" asp-page-handler="Delete" asp-route-fileID="@file.fileID">
+                        <button type="submit" asp-page-handler="Delete" asp-route-fileID="@file.fileID">Delete</button>
+                    </form>
+                </div>
+                <div id="fileBanner">
+                    <p>@file.fileName</p>
+                    <p>Last Edit: @file.fileDate</p>
+                    <p>Version: @file.fileVersion</p>
+                    <p>Department ID: @file.departmentID</p>
+                </div>
+            </div>
+                }
+       
         </div>
 
-        <div>
+        <div id="departments">
+            <div id="subHeading">
+                <h4>Squadrons</h4>
+            </div>
             @foreach (var deps in Model.Departments)
             {
-                <p>@deps.departmentName</p>
-                <p>@deps.departmentID</p>
+            <p>@deps.departmentName : @deps.departmentID</p>
             }
         </div>
 
-        <div>
+        <div id ="users">
             @foreach (var user in Model.Users)
             {
                 <p>@user.Title</p>

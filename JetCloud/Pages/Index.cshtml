@@ -13,20 +13,13 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-        <form asp-page="./Index" method="get">
-            <p>Find by Name:
-            <input type="text" name="Search" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-page="./Index">Back to full List</a>
-            </p>
-    </form>
+        <form id="searchBarContainer" asp-page="./Index" method="get">
+            <input id="inputText" type="text" name="Search" value="@Model.CurrentFilter" placeholder="Search"/>
+            <input id="submitSearch" type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Default</a>
+        </form>
  
-        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
-         @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)
-        </a>
-  
         <div id="filesGrid">
-           
                 @foreach (var file in Model.DepartmentFiles)
                 {
 
@@ -46,10 +39,17 @@
                     <p>Department ID: @file.departmentID</p>
                 </div>
             </div>
+
                 }
+        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+            @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)
+        </a>
+        <div>
+            <button onclick="showForm_hideForm()">Upload File</button>
+        </div>
        
         </div>
-
+    <div id="sideBar">
         <div id="departments">
             <div id="subHeading">
                 <h4>Squadrons</h4>
@@ -59,20 +59,20 @@
             <p>@deps.departmentName : @deps.departmentID</p>
             }
         </div>
-
+    
         <div id ="users">
+            <div id="subHeading">
+            <h4>Pilots</h4>
+            </div>
             @foreach (var user in Model.Users)
             {
-                <p>@user.Title</p>
-                <p>@user.GivenName</p>
-                <p>@user.SurName</p>
-              
+            <p>@user.Title @user.GivenName @user.SurName </p>
             }
         </div>
-
-        <div>
-        <button onclick="showForm_hideForm()">Upload File</button>
+        <div id="subHeading">
+            <h4>Storage</h4>
         </div>
+    </div>
 
         <form id="uploadFileForm" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="All"></div>

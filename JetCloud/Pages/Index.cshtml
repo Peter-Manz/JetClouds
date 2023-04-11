@@ -17,12 +17,16 @@
             <button id="submitSearch" type="submit"><i class="material-symbols-rounded">search</i></button>
             <a asp-page="./Index">Reset</a>
         </form>
- 
+        <div id="currentFiles">
+            <p>@Model.CurrentDepartment Files</p>
+        </div>
         <div id="filesGrid">
+         
                 @foreach (var file in Model.DepartmentFiles)
                 {
 
             <div id="departmentFiles">
+
                 <div id="fileDropDown">
                     <form method="post" asp-page-handler="Download" asp-route-fileID="@file.fileID">
                         <button type="submit" asp-page-handler="Download" asp-route-fileID="@file.fileID">Download</button>
@@ -35,7 +39,7 @@
                     <p>@file.fileName</p>
                     <p>Last Edit: @file.fileDate</p>
                     <p>Version: @file.fileVersion</p>
-                    <p>Department ID: @file.departmentID</p>
+                    @*<p>Department ID: @file.departmentID</p>*@
                 </div>
             </div>
 
@@ -56,7 +60,7 @@
             @foreach (var deps in Model.Departments)
             {
             <a asp-page="./Index" asp-route-depID="@deps.departmentID" asp-route-sortOrder="dep_sort">
-                <p>@deps.departmentName : @deps.departmentID</p>
+                <p>@deps.departmentName</p>
             </a>
             }
         </div>

@@ -40,6 +40,7 @@ namespace JetCloud.Pages
         public string NameSort { get; set; }
         public string CurrentFilter { get; set; }
         public string DepartmentSort { get; set; }
+        public string CurrentDepartment { get; set; }
 
 
         //[BindProperty]
@@ -73,7 +74,16 @@ namespace JetCloud.Pages
 
             CurrentFilter = search;
 
-                IQueryable<Files> depFiles = from f in _db.DepartmentFiles select f;
+            foreach (var dep in _db.Departments)
+            {
+                if (dep.departmentID == depID)
+                {
+                    var currentDepName = dep.departmentName;
+                    CurrentDepartment = Convert.ToString(currentDepName);
+                }
+
+            }
+                IQueryable < Files > depFiles = from f in _db.DepartmentFiles select f;
                 //IQueryable<Files> depzFiles;
 
                 //foreach (var file in _db.DepartmentFiles)
@@ -105,7 +115,6 @@ namespace JetCloud.Pages
                     break;
                 }
                 DepartmentFiles = await depFiles.ToListAsync();
-
                 Departments = await _db.Departments.ToListAsync();
                 Users = await _db.Users.OrderByDescending(b => b.UserID).ToListAsync();
         }

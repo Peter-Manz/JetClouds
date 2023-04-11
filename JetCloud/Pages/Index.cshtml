@@ -40,8 +40,8 @@
             </div>
 
                 }
-        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
-            @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)
+        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">File Name
+@*           @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)*@
         </a>
         <div>
             <button onclick="showForm_hideForm()">Upload File</button>
@@ -55,7 +55,9 @@
             </div>
             @foreach (var deps in Model.Departments)
             {
-            <p>@deps.departmentName : @deps.departmentID</p>
+            <a asp-page="./Index" asp-route-depID="@deps.departmentID" asp-route-sortOrder="dep_sort">
+                <p>@deps.departmentName : @deps.departmentID</p>
+            </a>
             }
         </div>
     

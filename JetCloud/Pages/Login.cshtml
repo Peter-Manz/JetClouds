@@ -7,7 +7,7 @@
 
 <form id="LoginForm" method="post">
     <div id="welcomeMessage">
-        <h2>Login</h2>
+        <img src="~/img/JetCloudsLogoSolo.png" alt="logo">
     </div>
     <div asp-validation-summary="All"></div>
     <div>
@@ -19,13 +19,8 @@
         <span asp-validation-for="Input.Password"></span>
     </div>
 
-    <div id="ResetDiv">
-
-        <div id="ResetBtn">
-            <button class="resetID" type="reset" value="Reset">RESET</button>
-        </div>
-
-        <button id="LoginSubmitBtn" type="submit">LOGIN</button>
+    <div id="formActions">
+        <button id="loginSubmitBtn" type="submit">LOGIN</button>
     </div>
     <div id="RegisterText">
         <p5>Don't have an account? <a asp-page="/Register">Register Here</a></p5>

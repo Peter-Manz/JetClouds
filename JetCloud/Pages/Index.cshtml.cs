@@ -18,6 +18,7 @@ using System.Security.Cryptography.Pkcs;
 using Microsoft.Data.SqlClient;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Authorization;
+using static System.Net.WebRequestMethods;
 
 namespace JetCloud.Pages
 {
@@ -38,6 +39,7 @@ namespace JetCloud.Pages
 
         public string NameSort { get; set; }
         public string CurrentFilter { get; set; }
+        public string DepartmentSort { get; set; }
 
 
         //[BindProperty]
@@ -56,12 +58,20 @@ namespace JetCloud.Pages
 
         }
         //Start of Adapted Code https://learn.microsoft.com/en-us/aspnet/core/data/ef-rp/sort-filter-page?view=aspnetcore-6.0
-        public async Task OnGetAsync(string sortOrder, string search)
+
+        public async Task OnGetAsync(string sortOrder, string search, int? depID)
         {
 
-                NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-                CurrentFilter = search;
+            if (depID == null){
+                depID = 0;
+            }
+            DepartmentSort = String.IsNullOrEmpty(sortOrder) ? "dep_sort" : "";
+ 
+
+
+            CurrentFilter = search;
 
                 IQueryable<Files> depFiles = from f in _db.DepartmentFiles select f;
                 //IQueryable<Files> depzFiles;
@@ -82,13 +92,17 @@ namespace JetCloud.Pages
 
                 switch (sortOrder)
                 {
-                    case "name_desc":
-                        depFiles = depFiles.OrderByDescending(b => b.fileName);
-                        break;
+                case "name_desc":                
+                    depFiles = depFiles.OrderByDescending(b => b.fileName);
+                    break;
 
-                    default:
-                        depFiles = depFiles.OrderBy(b => b.departmentID);
-                        break;
+                case "dep_sort":
+                    depFiles = depFiles.Where(b => b.departmentID == depID);
+                    break; 
+
+                default:
+                    depFiles = depFiles.OrderBy(b => b.departmentID);
+                    break;
                 }
                 DepartmentFiles = await depFiles.ToListAsync();
 

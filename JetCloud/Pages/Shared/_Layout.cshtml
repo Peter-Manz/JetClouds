@@ -20,11 +20,14 @@
                 <img src="~/img/JetCloudAppTitle.png" alt="logo">
             </a>
         </div>
-        <div id="pageLinks">
-            <form asp-page="/Logout" method="post">
-                <button type="submit">Logout</button>
+         @if (SignInManager.IsSignedIn(User))
+            {
+            <div id="pageLinks">
+                <form asp-page="/Logout" method="post">
+                    <button type="submit">Logout</button>
                 </form>
-        </div>
+            </div>
+            }
         <div id="profileName">
             @if (SignInManager.IsSignedIn(User))
             {

@@ -1,4 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+
 body {
     font-family: 'Merriweather', serif;
     background-color: #EAEAEA;
@@ -30,19 +31,53 @@ body {
     color: #f5f5f5;
 }
 #searchBarContainer {
-    position: absolute;
-    left:33%;
-    text-align: center;
+    display:block;
+    position:absolute;
+    left: 400px;
     margin-left: auto;
     margin-right: auto;
     top:20px;
 }
+#searchBarContainer a {
+    margin: 3px;
+    display: block;
+    text-decoration: none;
+    color: #f5f5f5;
+    width: 49px;
+}
+#searchBarContainer a:hover {
+    font-size:large;
+    cursor: pointer;
+}
+
+#submitSearch {
+    border-radius: 50px;
+    position: absolute;
+    margin-left: 5px;
+    display: inline-block;
+    background-image: linear-gradient(#7F0000, #9D00FF);
+    color: #f5f5f5;
+    border: none;
+    cursor: pointer;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
+}
+#submitSearch:hover {
+    transition: .5s;
+    border-radius: 30px;
+    box-shadow: 0px 0px 7px 7px #662582;
+    border:1px solid white;
+}
+
 #inputText {
+    display: inline-block;
+    margin-top:3px;
     width: 500px;
-    height: 48px;
-    border-radius: 5px;
-    padding-left: 49px;
+    height: 45px;
+    border-radius: 10px;
+    padding-left: 12px;
     font-size: 17px;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
+    border:none;
 }
 #submitSearch {
     width: 49px;
@@ -74,6 +109,10 @@ body {
     filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
     border-radius: 5px;
 }
+#departmentFiles:hover{
+    transition: .3s;
+    filter: drop-shadow(0px 5px 10px #662582);
+}
 #filesGrid #departmentFiles #fileDropDown {
     background-color: #F5F5F5;
     padding-left: 125px;
@@ -98,7 +137,6 @@ body {
     position: absolute;
     top:100px;
     width: 300px;
-
     z-index: 1;
 }
 #departments {
@@ -150,5 +188,23 @@ body {
     margin: 0px;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+}
+#LoginForm {
+    border-radius:10px;
+    margin-top: 100px;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    height:400px;
+    width: 400px;
+    border: 1px solid grey;
+}
+#FormInputs {
+    font-size:16px;
+    border-radius: 5px;
+    border: none;
+    width:300px;
+    margin: 10px;
+    height:45px;
 }
 

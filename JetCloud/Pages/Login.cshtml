@@ -5,30 +5,29 @@
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<form class="LoginForm" method="post">
-
-    <div class="welcomeMessage">
+<form id="LoginForm" method="post">
+    <div id="welcomeMessage">
         <h2>Login</h2>
     </div>
     <div asp-validation-summary="All"></div>
     <div>
-        <input class="FormInputs" type="text" asp-for="Input.Email" placeholder="Email" />
+        <input id="FormInputs" type="text" asp-for="Input.Email" placeholder="Email" />
         <span asp-validation-for="Input.Email"></span>
     </div>
     <div>
-        <input class="FormInputs" type="password" asp-for="Input.Password" placeholder="Password" />
+        <input id="FormInputs" type="password" asp-for="Input.Password" placeholder="Password" />
         <span asp-validation-for="Input.Password"></span>
     </div>
 
-    <div class="ResetDiv">
+    <div id="ResetDiv">
 
-        <div class="ResetBtn">
+        <div id="ResetBtn">
             <button class="resetID" type="reset" value="Reset">RESET</button>
         </div>
 
-        <button class="LoginSubmitBtn" type="submit">LOGIN</button>
+        <button id="LoginSubmitBtn" type="submit">LOGIN</button>
     </div>
-    <div class="RegisterText">
+    <div id="RegisterText">
         <p5>Don't have an account? <a asp-page="/Register">Register Here</a></p5>
     </div>
 

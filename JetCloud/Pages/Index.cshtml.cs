@@ -16,9 +16,12 @@ using System.Diagnostics.Tracing;
 using System;
 using System.Security.Cryptography.Pkcs;
 using Microsoft.Data.SqlClient;
+using System.Diagnostics.Eventing.Reader;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JetCloud.Pages
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private AppDbContext _db;
@@ -55,44 +58,44 @@ namespace JetCloud.Pages
         //Start of Adapted Code https://learn.microsoft.com/en-us/aspnet/core/data/ef-rp/sort-filter-page?view=aspnetcore-6.0
         public async Task OnGetAsync(string sortOrder, string search)
         {
-           
-            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-            CurrentFilter = search;
+                NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-            IQueryable<Files> depFiles = from f in _db.DepartmentFiles select f;
-            //IQueryable<Files> depzFiles;
-   
-            //foreach (var file in _db.DepartmentFiles)
-            //{
-            //    var fileName = _protector.Unprotect(file.fileName);
-            //    var fileType = _protector.Unprotect(file.fileType);
-            //    var fileData = _protector.Unprotect(file.fileData);
-            //    var readableFile = (file.fileID, fileName, file.fileDate, fileType, fileData, file.fileVersion, file.departmentID);
-            //}
+                CurrentFilter = search;
+
+                IQueryable<Files> depFiles = from f in _db.DepartmentFiles select f;
+                //IQueryable<Files> depzFiles;
+
+                //foreach (var file in _db.DepartmentFiles)
+                //{
+                //    var fileName = _protector.Unprotect(file.fileName);
+                //    var fileType = _protector.Unprotect(file.fileType);
+                //    var fileData = _protector.Unprotect(file.fileData);
+                //    var readableFile = (file.fileID, fileName, file.fileDate, fileType, fileData, file.fileVersion, file.departmentID);
+                //}
 
 
-            if (!string.IsNullOrEmpty(search))
-            {
-                depFiles =  depFiles.Where(b => b.fileName.Contains(search));
-            }
+                if (!string.IsNullOrEmpty(search))
+                {
+                    depFiles = depFiles.Where(b => b.fileName.Contains(search));
+                }
 
-            switch (sortOrder) 
-            {
-                case "name_desc":
-                    depFiles = depFiles.OrderByDescending(b => b.fileName);
-                    break;
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        depFiles = depFiles.OrderByDescending(b => b.fileName);
+                        break;
 
-                default:
-                    depFiles = depFiles.OrderBy(b => b.departmentID);
-                    break;
-            }
-            DepartmentFiles = await depFiles.ToListAsync();
-            
-            Departments = await _db.Departments.ToListAsync();
-            Users = await _db.Users.OrderByDescending(b => b.UserID).ToListAsync();
+                    default:
+                        depFiles = depFiles.OrderBy(b => b.departmentID);
+                        break;
+                }
+                DepartmentFiles = await depFiles.ToListAsync();
 
+                Departments = await _db.Departments.ToListAsync();
+                Users = await _db.Users.OrderByDescending(b => b.UserID).ToListAsync();
         }
+
         //end of adapted Code
 
         public async Task<IActionResult> OnPostAsync()

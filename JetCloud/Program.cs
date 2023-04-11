@@ -43,6 +43,12 @@ builder.Services.AddDataProtection()
 
 builder.Services.AddScoped<IServiceProvider, ServiceProvider>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = new PathString("/Login");
+    options.LogoutPath = new PathString("/Index");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -56,8 +62,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapRazorPages();
 app.UseEndpoints(endpoints =>
 {

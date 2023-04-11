@@ -16,21 +16,14 @@
 <body>
     <div id="header">
         <div id="logo">
-           <img src="~/img/JetCloudAppTitle.png" alt="logo">   
+            <a asp-page="/Index">
+                <img src="~/img/JetCloudAppTitle.png" alt="logo">
+            </a>
         </div>
         <div id="pageLinks">
-            @if (SignInManager.IsSignedIn(User))            
-            {
-                <a asp-page="/Index">Home</a>
-                <form asp-page="/Logout" method="post">
-                    <button type="submit">Logout</button>
+            <form asp-page="/Logout" method="post">
+                <button type="submit">Logout</button>
                 </form>
-            }
-            else
-            {
-                <a asp-page="/Register">Register</a>
-                <a asp-page="/Login">Login</a>
-            }  
         </div>
         <div id="profileName">
             @if (SignInManager.IsSignedIn(User))

@@ -10,13 +10,12 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-@if (SignInManager.IsSignedIn(User))
-{
         <form id="searchBarContainer" asp-page="./Index" method="get">
             <input id="inputText" type="text" name="Search" value="@Model.CurrentFilter" placeholder="Search"/>
-            <input id="submitSearch" type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-page="./Index">Default</a>
+            <button id="submitSearch" type="submit"><i class="material-symbols-rounded">search</i></button>
+            <a asp-page="./Index">Reset</a>
         </form>
  
         <div id="filesGrid">
@@ -94,8 +93,9 @@
                 </dd>
             </dl>
             <input class="UploadFilebtn" type="submit">
-        </form>
-}
-   
+    </form>
+
+
+
 
    

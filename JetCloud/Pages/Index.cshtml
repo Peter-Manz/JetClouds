@@ -20,22 +20,22 @@
         </form>
 
 <div id="toolBar">
-    <div id="tools">
+    <button id="tools" onclick="showForm_hideForm()">
         <div id="icon"><i class="material-symbols-rounded">publish</i></div>
         <div id="iconTitle">Upload</div>
-    </div>
-    <div id="tools">
-        <div id="icon"><i class="material-symbols-rounded">publish</i></div>
-        <div id="iconTitle">Download</div>
-    </div>
-    <div id="tools">
-        <div id="icon"><i class="material-symbols-rounded">publish</i></div>
+    </button>
+     <form method="post" asp-page-handler="DownloadAll">
+        <button id="tools" asp-page-handler="DownloadAll">
+            <div id="icon"><i class="material-symbols-rounded">download</i></div>
+            <div id="iconTitle">Download</div>
+        </button>
+    </form>
+    <form method="post" asp-page-handler="Excel">
+        <button id="tools" asp-page-handler="Excel">
+        <div id="icon"><i class="material-symbols-rounded">cloud_download</i></div>
         <div id="iconTitle">ExportCSV</div>
-    </div>
-    <div id="tools">
-        <div id="icon"><i class="material-symbols-rounded">publish</i></div>
-        <div id="iconTitle">Copy</div>
-    </div>
+        </button>
+    </form>
 </div>
         <div id="currentFiles">
             <p>@Model.CurrentDepartment Files</p>
@@ -59,17 +59,11 @@
                     <p>@file.fileName</p>
                     <p>Last Edit: @file.fileDate</p>
                     <p>Version: @file.fileVersion</p>
-                    @*<p>Department ID: @file.departmentID</p>*@
                 </div>
             </div>
 
                 }
-        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">File Name
-@*           @Html.DisplayNameFor(model => model.DepartmentFiles[0].fileName)*@
-        </a>
-        <div>
-            <button onclick="showForm_hideForm()">Upload File</button>
-        </div>
+
        
         </div>
     <div id="sideBar">

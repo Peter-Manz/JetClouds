@@ -19,6 +19,7 @@ using Microsoft.Data.SqlClient;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Authorization;
 using static System.Net.WebRequestMethods;
+using System.Text;
 
 namespace JetCloud.Pages
 {
@@ -64,14 +65,12 @@ namespace JetCloud.Pages
         {
 
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            DepartmentSort = String.IsNullOrEmpty(sortOrder) ? "dep_sort" : "";
 
             if (depID == null){
                 depID = 0;
             }
-            DepartmentSort = String.IsNullOrEmpty(sortOrder) ? "dep_sort" : "";
- 
-
-
+           
             CurrentFilter = search;
 
             foreach (var dep in _db.Departments)
@@ -189,6 +188,54 @@ namespace JetCloud.Pages
             {
                 return RedirectToPage("/Index");
             }
+        }
+        public async Task<IActionResult> OnPostDownloadAllAsync()
+        {
+            //Start of adapted Code https://learn.microsoft.com/en-us/answers/questions/1021484/how-to-download-multiple-files-in-asp-net-core-mvc
+           
+            var fileCapacity = await _db.DepartmentFiles.ToListAsync();
+            var zipName = $"JetClouds-{DateTime.Now.ToString("yyyy_MM_dd")}.zip";
+            if (fileCapacity != null) {
+                using (var ms = new MemoryStream())
+                {
+                    using (var zip = new ZipArchive(ms, ZipArchiveMode.Create, true))
+                    {
+                        foreach (var file in _db.DepartmentFiles)
+                        {
+                            var entry = zip.CreateEntry(file.fileName);
+                            using (var fs = new MemoryStream(file.fileData))
+                            using (var es = entry.Open())
+                            {
+                                fs.CopyTo(es);
+                            }
+
+                        }
+                    }
+                    return File(ms.ToArray(), "JetClouds/Zip", zipName);
+                }
+
+            }
+            //end of Adapted Code
+
+            return RedirectToPage("/Index");
+        }
+        public async Task<IActionResult> OnPostExcelAsync()
+        {
+            //Start of adapted code from https://blog.elmah.io/export-data-to-excel-with-asp-net-core/
+            var fileCapacity = await _db.DepartmentFiles.ToListAsync();
+
+            var builder = new StringBuilder();
+            builder.AppendLine("fileName,fileDate,fileType,fileData,fileVersion,departmentID,fileID");
+
+            if (fileCapacity != null){
+                foreach (var file in _db.DepartmentFiles)
+                {
+                    builder.AppendLine($"{file.fileName},{file.fileDate},{file.fileType},{file.fileData},{file.fileVersion},{file.departmentID},{file.fileID}");
+                }
+                return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "JetCloudFiles.csv");
+            }      
+            return RedirectToPage("/Index");
+            //end of adapted code
         }
         public async Task<IActionResult> OnPostDeleteAsync(int? fileID)
         {

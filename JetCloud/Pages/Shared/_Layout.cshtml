@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/JetCloud.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/StyleSheet.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/img/favicon.ico">
+
 </head>
 <body>
     <div id="header">
@@ -22,9 +24,10 @@
         </div>
          @if (SignInManager.IsSignedIn(User))
             {
-            <div id="pageLinks">
-                <form asp-page="/Logout" method="post">
-                    <button type="submit">Logout</button>
+            <div id="profileIcon" onclick="showLogout_hideLogout()">
+                <i class="material-symbols-rounded">manage_accounts</i>
+                <form id="profileLinks" asp-page="/Logout" method="post">
+                    <button id="logoutBtn" type="submit">Logout</button>
                 </form>
             </div>
             }

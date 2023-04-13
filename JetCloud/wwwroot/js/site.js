@@ -24,5 +24,15 @@ function showForm_hideForm()
         uploadBtn.style.color = "#f5f5f5";
         icon.style.color = "#f5f5f5";
         closeBtn.style.display = "none";
+        document.getElementById("uploadFile").reset();
+    }
+}
+
+function showLogout_hideLogout() {
+    var log = document.getElementById("profileLinks")
+    if (log.style.display === "block") {
+        log.style.display = "none";
+    } else {
+        log.style.display = "block";
     }
 }

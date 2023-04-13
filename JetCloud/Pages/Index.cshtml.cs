@@ -20,6 +20,9 @@ using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Authorization;
 using static System.Net.WebRequestMethods;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JetCloud.Pages
 {
@@ -80,7 +83,6 @@ namespace JetCloud.Pages
                     var currentDepName = dep.departmentName;
                     CurrentDepartment = Convert.ToString(currentDepName);
                 }
-
             }
                 IQueryable < Files > depFiles = from f in _db.DepartmentFiles select f;
                 //IQueryable<Files> depzFiles;
@@ -113,6 +115,7 @@ namespace JetCloud.Pages
                     depFiles = depFiles.OrderBy(b => b.departmentID);
                     break;
                 }
+                
                 DepartmentFiles = await depFiles.ToListAsync();
                 Departments = await _db.Departments.ToListAsync();
                 Users = await _db.Users.OrderByDescending(b => b.UserID).ToListAsync();
@@ -145,9 +148,10 @@ namespace JetCloud.Pages
             //uploadedFile.fileName = _protector.Protect(Convert.ToString(Upload.FileName));
 
             uploadedFile.fileName = Convert.ToString(Upload.FileName);
-            uploadedFile.departmentID = Convert.ToInt32(Request.Form["departmentID"]);            
+            uploadedFile.departmentID = Convert.ToInt32(Request.Form["departmentID"]);
             //uploadedFile.fileType = Convert.ToString(Upload.GetType());
-            uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
+            //uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
+            uploadedFile.fileDate = DateTime.Now;
             uploadedFile.fileVersion = 1;
 
             //This was just testing other methods, will switch to appropriate type from download function

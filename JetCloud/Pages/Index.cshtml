@@ -2,7 +2,7 @@
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Dashboard";
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.AspNetCore.Identity
@@ -74,7 +74,7 @@
             @foreach (var deps in Model.Departments)
             {
             <a asp-page="./Index" asp-route-depID="@deps.departmentID" asp-route-sortOrder="dep_sort">
-                <p>@deps.departmentName</p>
+                <p>@deps.departmentName : @deps.departmentID</p>
             </a>
             }
         </div>
@@ -92,28 +92,29 @@
             <h4>Storage</h4>
         </div>
     </div>
-        <button id="closeBtn" onclick="showForm_hideForm()">Close X</button>
-        <form id="uploadFileForm" enctype="multipart/form-data" method="post">
-            <div asp-validation-summary="All"></div>
-            <div>
-                <label asp-for="uploadedFile.departmentID">Department ID</label>
-                <input asp-for="uploadedFile.departmentID" name="departmentID" />
-            </div>
-            <div>
-                <label asp-for="uploadedFile.fileDate"></label>
-                <input asp-for="uploadedFile.fileDate" name="fileDate" />
+<div id="uploadFileForm"> 
+        <button id="closeBtn" onclick="showForm_hideForm()"><i class="material-symbols-rounded">close</i></button>
+    <div id="welcomeMessage">
+        <img src="~/img/JetCloudsLogoSolo.png" alt="logo">
+    </div>
+        <form id="uploadFile" enctype="multipart/form-data" method="post">
 
-            </div>
+    <div>
+        <label>Select Department</label>
+            <input id="FormInputs" asp-for="uploadedFile.departmentID" name="departmentID" placeholder="DepartmentID" />
+            <span asp-validation-for="uploadedFile.departmentID"></span>
+   </div>
             <dl>
                 <dt>
                     <label> Upload File</label>
                 </dt>
                 <dd>
-                    <input type="file" id="file1" asp-for="Upload" multiple="multiple"/>
+            <input id="FormInputs" type="file" id="file1" asp-for="Upload" multiple="multiple" />
                 </dd>
             </dl>
-            <input class="UploadFilebtn" type="submit">
+            <input id="uploadFilebtn" type="submit">
     </form>
+</div>
 
 
 

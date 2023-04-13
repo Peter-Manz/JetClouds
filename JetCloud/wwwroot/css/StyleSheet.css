@@ -20,23 +20,70 @@ body {
     width: 300px;
     height: 100%;
 }
-#header #pageLinks{
-     border: 1px solid black;
-     margin-left:auto;
+#header #profileIcon{
+     position:absolute;
+     top: 20px;
+     right: 10px;
+}
+#profileIcon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50px;
+    border: none;
+    background-image: linear-gradient(#7F0000, #9D00FF);
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
+    cursor: pointer;
+}
+#profileIcon i {
+    text-decoration: none;
+    padding-top: 15px;
+    padding-left: 16px;
+    color: #f5f5f5;
+    background-color: none;
+    cursor: pointer;
+}
+#profileIcon:hover {
+    transition: .5s;
+    box-shadow: 0px 0px 7px 7px #662582;
+    border: 1px solid #f5f5f5;
+    color: #f5f5f5;
+}
+#profileLinks{
+    display: none;
+}
+#logoutBtn {
+    font-family: 'Merriweather', serif;
+    position: absolute;
+    border-radius: 2px;
+    right: -10px;
+    padding-left:15px;
+    top: 79px;
+    text-align: left;
+    width: 125px;
+    height: 45px;
+    background-color: #2A3439;
+    color: #f5f5f5;
+}
+#logoutBtn:hover {
+    transition: .3s;
+    filter: drop-shadow(0px 2px 7px #662582);
+    border: 1px solid #f5f5f5;
 }
 #header #profileName{
+    text-align:right;
     position:absolute;
-    right:65px;
-    font-size:13px;
+    right: 75px;
+    font-size:11px;
     color: #f5f5f5;
 }
 #searchBarContainer {
-    display:block;
-    position:absolute;
+    display: block;
+    position: absolute;
     left: 20%;
     margin-left: auto;
     margin-right: auto;
-    top:20px;
+    top: 30px;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
 }
 #searchBarContainer a {
     margin: 3px;
@@ -56,11 +103,11 @@ body {
     height: 35px;
     position: absolute;
     margin-left: 5px;
-    margin-top:2px;
-    padding:5px;
+    margin-top: 2px;
+    padding: 5px;
     display: inline-block;
     background-image: linear-gradient(#7F0000, #9D00FF);
-    color: #f5f5f5;
+    color: #2A3439;
     border: none;
     cursor: pointer;
     filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
@@ -71,6 +118,7 @@ body {
     border-radius: 30px;
     box-shadow: 0px 0px 7px 7px #662582;
     border: 1px solid #f5f5f5;
+    color: #f5f5f5;
 }
 
 #inputText {
@@ -84,30 +132,78 @@ body {
     filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
     border:none;
 }
+#closeBtn {
+    position: absolute;
+    margin-left: 345px;
+    margin-top: 15px;
+    border-radius: 50px;
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    z-index: 1;
+    border: none;
+    display: none;
+    background-color: #2A3439;
+    color: #f5f5f5;
+}
+#closeBtn:hover {
+    width: 40px;
+    height: 40px;
+    padding-top:7px;
+    transition: .3s;
+    box-shadow: 0px 0px 7px 7px #662582;
+    color: #662582;
 
+}
 #uploadFileForm {
+    position: absolute;
     text-align: center;
     display: none;
     border: 1px solid black;
     width: 400px;
-    height: 400px;
-    margin: auto;
-    border-radius: 5px;
+    height: 500px;
+    border-radius: 3px;
+    top: 150px;
+    left: 40%;
+    right: 40%;
+    background-color: #f5f5f5;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
+
+}#uploadFile {
+     padding-top:25px;
+ }
+#uploadFilebtn {
+    font-family: 'Merriweather', serif;
+    font-weight: 200;
+    color: #f5f5f5;
+    margin: 35px 10px;
+    border-radius: 50px;
+    width: 250px;
+    height: 45px;
+    border: none;
+    background-image: linear-gradient(#7F0000, #9D00FF);
+    color: #f5f5f5;
+    border: none;
+    cursor: pointer;
+}
+#uploadFilebtn:hover {
+    transition: .3s;
+    box-shadow: 0px 0px 20px 4px #662582;
 }
 #filesGrid {
     padding-left: 20px;
-    padding-top:0px;
-    margin:0px;
+    padding-top: 10px;
+    margin: 0px;
     display: flex;
     flex-wrap: wrap;
-    margin-left:300px;
+    margin-left: 300px;
 }
 #departmentFiles {
     background-color: #F5F5F5;
     width: 200px;
-    height: 225px;
+    height: 200px;
     padding: 0px;
-    margin: 12px;
+    margin: 17px;
     filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.5));
     border-radius: 5px;
 }
@@ -253,7 +349,7 @@ body {
     position:absolute;
     display: inline-flex;
     padding: 0px;
-    right: 2%;
+    right: 10%;
     top: 69px;
     border: none;
 }
@@ -290,11 +386,5 @@ body {
 #iconTitle:hover {
     font-size: 16px;
 }
-#closeBtn {
-    margin-left:45%;
-    margin-right:45%;
-    background-color:red;
-    z-index:1;
-    display: none;
-}
+
 

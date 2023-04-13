@@ -295,5 +295,6 @@ body {
     margin-right:45%;
     background-color:red;
     z-index:1;
+    display: none;
 }
 

@@ -67,9 +67,19 @@
        
         </div>
     <div id="sideBar">
+
         <div id="departments">
             <div id="subHeading">
                 <h4>Squadrons</h4>
+                <div id="moreDiv" onclick="show_hide()">
+                    <i class="material-symbols-rounded">more_vert</i>
+                    <div id="links">
+                        <a>TestingSlot1</a>
+                        <a>TestingSlot2</a>
+                        <a>TestingSlot3</a>
+                        <a>TestingSlot4</a>
+                    </div>
+                </div>
             </div>
             @foreach (var deps in Model.Departments)
             {

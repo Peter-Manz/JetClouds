@@ -52,12 +52,12 @@ body {
 
 #submitSearch {
     border-radius: 10px;
-    width: 45px;
-    height: 45px;
+    width: 35px;
+    height: 35px;
     position: absolute;
     margin-left: 5px;
     margin-top:2px;
-    padding:11px;
+    padding:5px;
     display: inline-block;
     background-image: linear-gradient(#7F0000, #9D00FF);
     color: #f5f5f5;
@@ -76,8 +76,8 @@ body {
 #inputText {
     display: inline-block;
     margin-top:3px;
-    width: 500px;
-    height: 45px;
+    width: 400px;
+    height: 35px;
     border-radius: 10px;
     padding-left: 12px;
     font-size: 17px;
@@ -250,14 +250,15 @@ body {
     padding-left: 15px;
 }
 #toolBar {
-    position: absolute;
+    position:absolute;
+    display: inline-flex;
     padding: 0px;
     right: 2%;
     top: 69px;
     border: none;
 }
 #toolBar #tools {
-    display: inline-flex;
+    display:inline-flex;
     width: 125px;
     padding: 0px;
     margin-left: 10px;
@@ -288,5 +289,11 @@ body {
 }
 #iconTitle:hover {
     font-size: 16px;
+}
+#closeBtn {
+    margin-left:45%;
+    margin-right:45%;
+    background-color:red;
+    z-index:1;
 }
 

@@ -47,14 +47,19 @@
 
             <div id="departmentFiles">
 
-                <div id="fileDropDown">
+            <div id="fileDropDown">
+                <i class="material-symbols-rounded">more_vert</i>
+                <div id="fileLinks" >
                     <form method="post" asp-page-handler="Download" asp-route-fileID="@file.fileID">
                         <button type="submit" asp-page-handler="Download" asp-route-fileID="@file.fileID">Download</button>
                     </form>
                     <form method="post" asp-page-handler="Delete" asp-route-fileID="@file.fileID">
                         <button type="submit" asp-page-handler="Delete" asp-route-fileID="@file.fileID">Delete</button>
-                    </form>
+                     </form>
                 </div>
+            </div>
+
+               
                 <div id="fileBanner">
                     <p>@file.fileName</p>
                     <p>Last Edit: @file.fileDate</p>
@@ -74,10 +79,9 @@
                 <div id="moreDiv" onclick="show_hide()">
                     <i class="material-symbols-rounded">more_vert</i>
                     <div id="links">
-                        <a>TestingSlot1</a>
-                        <a>TestingSlot2</a>
-                        <a>TestingSlot3</a>
-                        <a>TestingSlot4</a>
+                        <a>Create</a>
+                        <a>Edit</a>
+                        <a>Delete</a>
                     </div>
                 </div>
             </div>

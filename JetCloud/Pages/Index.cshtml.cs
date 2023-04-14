@@ -23,6 +23,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using System.Security.Claims;
 
 namespace JetCloud.Pages
 {
@@ -40,23 +41,23 @@ namespace JetCloud.Pages
         public IList<Files> DepartmentFiles { get; set; }
         public IList<Department> Departments { get; set; }
         public IList<Users> Users { get; set; }
-
-        public string NameSort { get; set; }
         public string CurrentFilter { get; set; }
         public string DepartmentSort { get; set; }
         public string CurrentDepartment { get; set; }
-
+        public string CurrentUser { get; set; }
 
         //[BindProperty]
         // public Files downloadFile { get; set; }
 
-         IDataProtector _protector;
+        IDataProtector _protector;
 
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public IndexModel(AppDbContext db, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment he, IDataProtectionProvider provider)
+        public IndexModel(AppDbContext db, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> um, IWebHostEnvironment he, IDataProtectionProvider provider)
         {
             _signInManager = signInManager;
+            _userManager = um;
             _db = db;
             _he = he;
             _protector = provider.CreateProtector("Contoso.Security.BearerToken");
@@ -67,7 +68,24 @@ namespace JetCloud.Pages
         public async Task OnGetAsync(string sortOrder, string search, int? depID)
         {
 
-            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            var currentUser = User.FindFirstValue(ClaimTypes.Email);
+            var currentAspUser = await _userManager.FindByEmailAsync(currentUser);
+            var currentRoles = await _userManager.GetRolesAsync(currentAspUser);
+            var assingedRole = currentRoles[0];
+
+
+            foreach (var user in _db.Users)
+            {
+                string decryptedString = _protector.Unprotect(user.Email);
+                if (decryptedString == currentUser){
+                    CurrentUser = user.Title + " " + user.GivenName  + " " + user.SurName;
+                    if (assingedRole != "Admin")
+                    {
+                        depID = user.DepartmentID;
+                    }
+                }
+            }
+              
             DepartmentSort = String.IsNullOrEmpty(sortOrder) ? "dep_sort" : "";
 
             if (depID == null){
@@ -84,41 +102,31 @@ namespace JetCloud.Pages
                     CurrentDepartment = Convert.ToString(currentDepName);
                 }
             }
-                IQueryable < Files > depFiles = from f in _db.DepartmentFiles select f;
-                //IQueryable<Files> depzFiles;
+            IQueryable <Files> depFiles = from f in _db.DepartmentFiles select f;
 
-                //foreach (var file in _db.DepartmentFiles)
-                //{
-                //    var fileName = _protector.Unprotect(file.fileName);
-                //    var fileType = _protector.Unprotect(file.fileType);
-                //    var fileData = _protector.Unprotect(file.fileData);
-                //    var readableFile = (file.fileID, fileName, file.fileDate, fileType, fileData, file.fileVersion, file.departmentID);
-                //}
-
-
-                if (!string.IsNullOrEmpty(search))
-                {
-                    depFiles = depFiles.Where(b => b.fileName.Contains(search));
-                }
-
+            if (!string.IsNullOrEmpty(search))
+            {
+                depFiles = depFiles.Where(b => b.fileName.Contains(search));
+            }
+            if (assingedRole != "Admin")
+            {
+                depFiles = depFiles.Where(b => b.departmentID == depID);
+            }
+            else
+            {
                 switch (sortOrder)
                 {
-                case "name_desc":                
-                    depFiles = depFiles.OrderByDescending(b => b.fileName);
-                    break;
-
-                case "dep_sort":
-                    depFiles = depFiles.Where(b => b.departmentID == depID);
-                    break; 
-
-                default:
-                    depFiles = depFiles.OrderBy(b => b.departmentID);
-                    break;
+                    case "dep_sort":
+                        depFiles = depFiles.Where(b => b.departmentID == depID);
+                        break;
+                    default:
+                        depFiles = depFiles.OrderBy(b => b.departmentID);
+                        break;
                 }
-                
-                DepartmentFiles = await depFiles.ToListAsync();
-                Departments = await _db.Departments.ToListAsync();
-                Users = await _db.Users.OrderByDescending(b => b.UserID).ToListAsync();
+            }
+            DepartmentFiles = await depFiles.ToListAsync();
+            Departments = await _db.Departments.ToListAsync();
+            Users = await _db.Users.OrderByDescending(b => b.UserID).ToListAsync();
         }
 
         //end of adapted Code
@@ -132,6 +140,10 @@ namespace JetCloud.Pages
             }
 
             var currentFile = _db.DepartmentFiles.OrderByDescending(b => b.fileID).FirstOrDefault();
+            var currentUser = User.FindFirstValue(ClaimTypes.Email);
+            var currentAspUser = await _userManager.FindByEmailAsync(currentUser);
+            var currentRoles = await _userManager.GetRolesAsync(currentAspUser);
+            var assingedRole = currentRoles[0];
 
             if (currentFile == null)
             {
@@ -148,7 +160,23 @@ namespace JetCloud.Pages
             //uploadedFile.fileName = _protector.Protect(Convert.ToString(Upload.FileName));
 
             uploadedFile.fileName = Convert.ToString(Upload.FileName);
-            uploadedFile.departmentID = Convert.ToInt32(Request.Form["departmentID"]);
+            
+            if (assingedRole == "Admin")
+            {
+                uploadedFile.departmentID = Convert.ToInt32(Request.Form["departmentID"]);
+            }
+            else {
+                foreach (var user in _db.Users)
+                {
+                    string decryptedString = _protector.Unprotect(user.Email);
+                    if (decryptedString == currentUser)
+                    {
+                        uploadedFile.departmentID = user.DepartmentID;
+                    }
+                }
+               
+                //uploadedFile.departmentID = assingedDepartment;
+            }
             //uploadedFile.fileType = Convert.ToString(Upload.GetType());
             //uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
             uploadedFile.fileDate = DateTime.Now;
@@ -263,6 +291,13 @@ namespace JetCloud.Pages
                 throw new Exception($"Item {file.fileID} not found!", e);
             }
             return RedirectToPage("./Index");
+        }
+        private async Task<string> getRoleAsync()
+        {
+            var currentUser = User.FindFirstValue(ClaimTypes.Email);
+            var currentAspUser = await _userManager.FindByEmailAsync(currentUser);
+            var currentRoles = await _userManager.GetRolesAsync(currentAspUser);
+            return currentRoles[0];
         }
     }
 }

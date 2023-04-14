@@ -10,14 +10,12 @@
         <img src="~/img/JetCloudsLogoSolo.png" alt="logo">
     </div>
     <div asp-validation-summary="All"></div>
-    <div>
-        <input id="FormInputs" type="text" asp-for="Input.Email" placeholder="Email" />
-        <span asp-validation-for="Input.Email"></span>
-    </div>
-    <div>
-        <input id="FormInputs" type="password" asp-for="Input.Password" placeholder="Password" />
-        <span asp-validation-for="Input.Password"></span>
-    </div>
+
+    <input id="FormInputs" type="text" asp-for="Input.Email" placeholder="Email" />
+    <span asp-validation-for="Input.Email"></span>
+
+    <input id="FormInputs" type="password" asp-for="Input.Password" placeholder="Password" />
+    <span asp-validation-for="Input.Password"></span>
 
     <div id="formActions">
         <button id="loginSubmitBtn" type="submit">LOGIN</button>

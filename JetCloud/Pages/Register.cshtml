@@ -8,57 +8,46 @@
 @using JetCloud.Data
 @using Microsoft.Extensions.Options
 
-<div class="RegisterMessage">
-    <h2>Registration</h2>
-</div>
+<form id="RegisterForm" asp-action="Register" class="RegisterForm" method="post">
+    <div id="welcomeMessage">
+        <h4>Registration Details</h4>
+    </div>
+    
 
-<form asp-action="Register" class="RegisterForm" method="post">
-    <h4>Enter in your details</h4>
-    <div asp-validation-summary="All"></div>
-    <div>
-        <label asp-for="newUser.GivenName"></label>
-        <input asp-for="newUser.GivenName" name = "GivenName"/>
+    <label id="FormLabels" asp-for="newUser.GivenName"></label>
+    <input id="RegisterInputs" type="text" asp-for="newUser.GivenName" name="GivenName" placeholder="GivenName" />
+    
+    <label id="FormLabels" asp-for="newUser.SurName"></label>
+    <input id="RegisterInputs" type="text" asp-for="newUser.SurName" name="SurName" placeholder="SurName" />
+
+
+    <label id="FormLabels" asp-for="newUser.Title"></label>
+    <input id="RegisterInputs" type="text" asp-for=" newUser.Title" name="Title" placeholder="Title" />
       
-    </div>
-    <div>
-        <label asp-for="newUser.SurName"></label>
-        <input asp-for="newUser.SurName" name="SurName" />
+  
+    <label id="FormLabels" asp-for="newUser.Dob">Date of Birth</label>
+    <input id="RegisterInputs" asp-for="newUser.Dob" name="Dob" />
        
-    </div>
-    <div>
-        <label asp-for="newUser.Title"></label>
-        <input asp-for="newUser.Title" name="Title" />
+
+    <label id="FormLabels" asp-for="newUser.DepartmentID"></label>
+    <input id="RegisterInputs" asp-for="newUser.DepartmentID" name="DepartmentID" />
       
-    </div>
-    <div>
-        <label asp-for="newUser.Dob"></label>
-        <input asp-for="newUser.Dob" name="Dob" />
-       
-    </div>
-    <div>
-        <label asp-for="newUser.DepartmentID"></label>
-        <input asp-for="newUser.DepartmentID" name="DepartmentID" />
-      
-    </div>
-    <div>
-        <label asp-for="Input.Email"></label>
-        <input asp-for="Input.Email" />
-        <span asp-validation-for="Input.Email"></span>
-    </div>
-    <div>
-        <label asp-for="Input.UserName"></label>
-        <input asp-for="Input.UserName" />
-        <span asp-validation-for="Input.UserName"></span>
-   </div>
-    <div>
-        <label asp-for="Input.Password"></label>
-        <input asp-for="Input.Password" />
-        <span asp-validation-for="Input.Password"></span>
-    </div>
-    <div>
-        <label asp-for="Input.ConfirmPassword"></label>
-        <input asp-for="Input.ConfirmPassword" />
-        <span asp-validation-for="Input.ConfirmPassword"></span>
-    </div>
-    <button class="RegisterBtn" type="submit">Register</button>
+
+    <label id="FormLabels" asp-for="Input.Email"></label>
+    <input id="RegisterInputs" asp-for="Input.Email" />
+    <span asp-validation-for="Input.Email"></span>
+
+    <label id="FormLabels" asp-for="Input.UserName"></label>
+    <input id="RegisterInputs" asp-for="Input.UserName" />
+    <span asp-validation-for="Input.UserName"></span>
+
+    <label id="FormLabels" asp-for="Input.Password"></label>
+    <input id="RegisterInputs" asp-for="Input.Password" />
+    <span asp-validation-for="Input.Password"></span>
+
+    <label id="FormLabels" asp-for="Input.ConfirmPassword"></label>
+    <input id="RegisterInputs" asp-for="Input.ConfirmPassword" />
+    <span asp-validation-for="Input.ConfirmPassword"></span>
+ 
+    <button id="RegisterBtn" type="submit">Register</button>
 </form>

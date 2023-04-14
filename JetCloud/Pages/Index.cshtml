@@ -30,12 +30,18 @@
             <div id="iconTitle">Download</div>
         </button>
     </form>
-    <form method="post" asp-page-handler="Excel">
-        <button id="tools" asp-page-handler="Excel">
-        <div id="icon"><i class="material-symbols-rounded">cloud_download</i></div>
-        <div id="iconTitle">ExportCSV</div>
-        </button>
-    </form>
+   @if (SignInManager.IsSignedIn(User))
+   {
+     if (User.IsInRole("Admin"))
+     {
+        <form method="post" asp-page-handler="Excel">
+            <button id="tools" asp-page-handler="Excel">
+            <div id="icon"><i class="material-symbols-rounded">cloud_download</i></div>
+            <div id="iconTitle">ExportCSV</div>
+            </button>
+        </form>
+     }
+   }
 </div>
         <div id="currentFiles">
             <p>@Model.CurrentDepartment Files</p>
@@ -53,9 +59,15 @@
                     <form method="post" asp-page-handler="Download" asp-route-fileID="@file.fileID">
                         <button type="submit" asp-page-handler="Download" asp-route-fileID="@file.fileID">Download</button>
                     </form>
-                    <form method="post" asp-page-handler="Delete" asp-route-fileID="@file.fileID">
-                        <button type="submit" asp-page-handler="Delete" asp-route-fileID="@file.fileID">Delete</button>
-                     </form>
+                   @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (User.IsInRole("Admin"))
+                        {
+                            <form method="post" asp-page-handler="Delete" asp-route-fileID="@file.fileID">
+                                <button type="submit" asp-page-handler="Delete" asp-route-fileID="@file.fileID">Delete</button>
+                            </form>
+                        }
+                    }
                 </div>
             </div>
 
@@ -75,7 +87,7 @@
 
         <div id="departments">
             <div id="subHeading">
-                <h4>Squadrons</h4>
+                <h4>Squadron</h4>
                 <div id="moreDiv" onclick="show_hide()">
                     <i class="material-symbols-rounded">more_vert</i>
                     <div id="links">
@@ -85,22 +97,44 @@
                     </div>
                 </div>
             </div>
-            @foreach (var deps in Model.Departments)
+            @if (SignInManager.IsSignedIn(User))
             {
-            <a asp-page="./Index" asp-route-depID="@deps.departmentID" asp-route-sortOrder="dep_sort">
-                <p>@deps.departmentName : @deps.departmentID</p>
-            </a>
+            if (User.IsInRole("Admin"))
+            {
+                @foreach (var deps in Model.Departments)
+                {
+                    <a asp-page="./Index" asp-route-depID="@deps.departmentID" asp-route-sortOrder="dep_sort">
+                        <p>@deps.departmentName : @deps.departmentID</p>
+                    </a>
+                }
             }
+            else
+            {
+                <a><p>@Model.CurrentDepartment </p></a>
+            }
+            }
+
+
         </div>
     
         <div id ="users">
             <div id="subHeading">
-            <h4>Pilots</h4>
+            <h4>Pilot</h4>
             </div>
-            @foreach (var user in Model.Users)
+            @if (SignInManager.IsSignedIn(User))
             {
-            <p>@user.Title @user.GivenName @user.SurName </p>
-            }
+                if (User.IsInRole("Admin"))
+                {
+                    @foreach (var user in Model.Users)
+                    {
+                    <p>@user.Title @user.GivenName @user.SurName </p>
+                    }
+                }
+                else
+                {
+                    <p>@Model.CurrentUser </p>
+                }
+            }  
         </div>
         <div id="subHeading">
             <h4>Storage</h4>
@@ -113,20 +147,17 @@
     </div>
         <form id="uploadFile" enctype="multipart/form-data" method="post">
 
-    <div>
-        <label>Select Department</label>
+        @if (SignInManager.IsSignedIn(User))
+        {
+          if (User.IsInRole("Admin"))
+          {
+            <label>Select Department</label>
             <input id="FormInputs" asp-for="uploadedFile.departmentID" name="departmentID" placeholder="DepartmentID" />
             <span asp-validation-for="uploadedFile.departmentID"></span>
-   </div>
-            <dl>
-                <dt>
-                    <label> Upload File</label>
-                </dt>
-                <dd>
+          }
             <input id="FormInputs" type="file" id="file1" asp-for="Upload" multiple="multiple" />
-                </dd>
-            </dl>
             <input id="uploadFilebtn" type="submit">
+            }
     </form>
 </div>
 

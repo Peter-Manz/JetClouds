@@ -46,9 +46,6 @@ namespace JetCloud.Pages
         public string CurrentDepartment { get; set; }
         public string CurrentUser { get; set; }
 
-        //[BindProperty]
-        // public Files downloadFile { get; set; }
-
         IDataProtector _protector;
 
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -63,7 +60,7 @@ namespace JetCloud.Pages
             _protector = provider.CreateProtector("Contoso.Security.BearerToken");
 
         }
-        //Start of Adapted Code https://learn.microsoft.com/en-us/aspnet/core/data/ef-rp/sort-filter-page?view=aspnetcore-6.0
+        //Start of Adapted Code (Tdykstra, n.d.)
 
         public async Task OnGetAsync(string sortOrder, string search, int? depID)
         {
@@ -154,11 +151,7 @@ namespace JetCloud.Pages
             {
                 int fileID = currentFile.fileID + 1;
                 uploadedFile.fileID = fileID;
-
             }
-
-            //uploadedFile.fileName = _protector.Protect(Convert.ToString(Upload.FileName));
-
             uploadedFile.fileName = Convert.ToString(Upload.FileName);
             
             if (assingedRole == "Admin")
@@ -175,10 +168,7 @@ namespace JetCloud.Pages
                     }
                 }
                
-                //uploadedFile.departmentID = assingedDepartment;
             }
-            //uploadedFile.fileType = Convert.ToString(Upload.GetType());
-            //uploadedFile.fileDate = Convert.ToDateTime(Request.Form["fileDate"]);
             uploadedFile.fileDate = DateTime.Now;
             uploadedFile.fileVersion = 1;
 
@@ -191,7 +181,6 @@ namespace JetCloud.Pages
             using (MemoryStream ms = new MemoryStream(100))
             {
                 await Upload.CopyToAsync(ms);
-               //uploadedFile.fileData = _protector.Protect(ms.ToArray());
                 uploadedFile.fileData = ms.ToArray();
             }
             _db.DepartmentFiles.Add(uploadedFile);
@@ -206,13 +195,13 @@ namespace JetCloud.Pages
 
             if (!(downloadFile == null))
             {
-                //start of adapted code from https://www.aspsnippets.com/Articles/FileContentResult-Net-Core-Example-Using-FileContentResult-in-ASPNet-Core-MVC.aspx
+                //start of adapted code from (Khan, n.d.)
                 byte[] bytes = downloadFile.fileData;
                 string contentType = "";
                 new FileExtensionContentTypeProvider().TryGetContentType(downloadFile.fileName, out contentType);
                 //end of adapted code
 
-                //start of adatped code https://dev.to/zoltanhalasz/upload-and-download-pdf-files-to-from-ms-sql-database-using-razor-pages-7jh
+                //start of adatped code (Halasz, 2020)
                 return new FileContentResult(bytes, contentType) { FileDownloadName = downloadFile.fileName };
                 //end of adapted code
             }
@@ -223,7 +212,7 @@ namespace JetCloud.Pages
         }
         public async Task<IActionResult> OnPostDownloadAllAsync()
         {
-            //Start of adapted Code https://learn.microsoft.com/en-us/answers/questions/1021484/how-to-download-multiple-files-in-asp-net-core-mvc
+            //Start of adapted Code (Zhi, 2022)
            
             var fileCapacity = await _db.DepartmentFiles.ToListAsync();
             var zipName = $"JetClouds-{DateTime.Now.ToString("yyyy_MM_dd")}.zip";
@@ -253,7 +242,7 @@ namespace JetCloud.Pages
         }
         public async Task<IActionResult> OnPostExcelAsync()
         {
-            //Start of adapted code from https://blog.elmah.io/export-data-to-excel-with-asp-net-core/
+            //Start of adapted code from (Ardal, 2020)
             var fileCapacity = await _db.DepartmentFiles.ToListAsync();
 
             var builder = new StringBuilder();

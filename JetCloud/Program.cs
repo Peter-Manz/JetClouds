@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.DataProtection.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Start of AdaptedCode from https://stackoverflow.com/questions/69722872/asp-net-core-6-how-to-access-configuration-during-startup
+//Start of AdaptedCode from (Stackoverflow, n.d.)
 ConfigurationManager configuration = builder.Configuration;
 IWebHostEnvironment enviroment = builder.Environment;
 //end of adapted code 
@@ -24,7 +24,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 
-//start of adapted Code from (msmbaldwin, 2023)
+//start of adapted Code from (Msmbaldwin, 2023)
 var kvUrl = new String(configuration["KeyVaultUrl"]);
 var secretClient = new SecretClient(new Uri(kvUrl), new DefaultAzureCredential());
 var sqlConnString = await secretClient.GetSecretAsync("AppDbContext");

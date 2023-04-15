@@ -10,9 +10,10 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@*Start of Dapated Code from (Google, 2019)*@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
-
+@*End of Adapted Code*@
         <form id="searchBarContainer" asp-page="./Index" method="get">
             <input id="inputText" type="text" name="Search" value="@Model.CurrentFilter" placeholder="Search"/>
             <button id="submitSearch" type="submit"><i class="material-symbols-rounded">search</i></button>

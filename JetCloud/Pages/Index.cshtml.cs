@@ -281,12 +281,5 @@ namespace JetCloud.Pages
             }
             return RedirectToPage("./Index");
         }
-        private async Task<string> getRoleAsync()
-        {
-            var currentUser = User.FindFirstValue(ClaimTypes.Email);
-            var currentAspUser = await _userManager.FindByEmailAsync(currentUser);
-            var currentRoles = await _userManager.GetRolesAsync(currentAspUser);
-            return currentRoles[0];
-        }
     }
 }

@@ -23,7 +23,6 @@ namespace JetCloud.Pages
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
-        //private RoleManagerModel _roleManagerModel;
 
         public RegisterModel(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> um, SignInManager<ApplicationUser> sm, AppDbContext db, IDataProtectionProvider provider)
         {

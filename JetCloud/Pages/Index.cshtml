@@ -25,16 +25,17 @@
         <div id="icon"><i class="material-symbols-rounded">publish</i></div>
         <div id="iconTitle">Upload</div>
     </button>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin"))
+        {
      <form method="post" asp-page-handler="DownloadAll">
         <button id="tools" asp-page-handler="DownloadAll">
             <div id="icon"><i class="material-symbols-rounded">download</i></div>
             <div id="iconTitle">Download</div>
         </button>
     </form>
-   @if (SignInManager.IsSignedIn(User))
-   {
-     if (User.IsInRole("Admin"))
-     {
+
         <form method="post" asp-page-handler="Excel">
             <button id="tools" asp-page-handler="Excel">
             <div id="icon"><i class="material-symbols-rounded">cloud_download</i></div>
